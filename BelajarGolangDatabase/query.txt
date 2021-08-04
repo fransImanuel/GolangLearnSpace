@@ -1,0 +1,35 @@
+alter table customer
+add column email varchar(100),
+add column balance int default 0,
+add column rating double default 0.0,
+add column created_at timestamp default current_timestamp,
+add column birth_date date,
+add column married boolean default false;
+
+insert into customer(id, name, email, balance, rating, birth_date, married)
+values ('eko', 'Eko', 'eko@gmail.com', 1000000, 90.0, '1999-10-10', true),
+('budi', 'Budi', 'budi@gmail.com', 9500000, 85.5, '1995-01-10', true);
+('joko', 'Joko', 'joko@gmail.com', 800000, 75.7, '1999-10-01', false)
+
+update customer
+set email=null,
+birth_date = null
+where id='joko';
+
+create table user(
+username varchar(100) not null,
+password varchar(100) not null,
+primary key(username)
+)engine = InnoDB;
+
+insert into user(username, password)
+values ('admin','admin');
+
+create table comments(
+id int not null auto_increment,
+email varchar(100) not null,
+comment text,
+primary key(id)
+) engine = InnoDB;
+
+select count(*) from comments;
