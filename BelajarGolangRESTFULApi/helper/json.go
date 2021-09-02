@@ -17,3 +17,5 @@ func WriteToResponseBody(w http.ResponseWriter, response interface{}) {
 	err := encoder.Encode(response)
 	PanicIfError(err)
 }
+
+//

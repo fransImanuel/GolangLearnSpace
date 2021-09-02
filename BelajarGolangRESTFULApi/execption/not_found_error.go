@@ -7,3 +7,5 @@ type NotFoundError struct {
 func NewNotFoundError(error string) NotFoundError {
 	return NotFoundError{Error: error}
 }
+
+//

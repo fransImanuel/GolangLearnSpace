@@ -13,3 +13,5 @@ type CategoryController interface {
 	FindById(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 	FindAll(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 }
+
+//

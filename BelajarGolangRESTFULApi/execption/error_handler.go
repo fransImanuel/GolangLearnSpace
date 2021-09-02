@@ -8,6 +8,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+//
 func ErrorHandler(w http.ResponseWriter, r *http.Request, err interface{}) {
 	if notFoundError(w, r, err) {
 		return
