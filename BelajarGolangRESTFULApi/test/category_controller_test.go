@@ -359,3 +359,5 @@ func TestUnauthorized(t *testing.T) {
 	assert.Equal(t, 401, int(responseBody["code"].(float64)))
 	assert.Equal(t, "UNAUTHORIZED", responseBody["status"])
 }
+
+//
