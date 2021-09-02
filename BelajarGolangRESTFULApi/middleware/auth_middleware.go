@@ -29,3 +29,5 @@ func (middleware AuthMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Reques
 		helper.WriteToResponseBody(w, webResponse)
 	}
 }
+
+//

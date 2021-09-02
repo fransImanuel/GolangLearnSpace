@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"sync"
 	"time"
 )
@@ -113,6 +114,7 @@ func rename(chanIn <-chan FileInfo) <-chan FileInfo {
 }
 
 func main() {
+	runtime.GOMAXPROCS(4)
 	log.Println("start")
 	start := time.Now()
 

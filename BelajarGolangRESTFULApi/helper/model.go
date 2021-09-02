@@ -21,3 +21,5 @@ func ToCategoryResponses(categories []domain.Category) []web.CategoryResponse {
 	return CategoryResponse
 
 }
+
+//
