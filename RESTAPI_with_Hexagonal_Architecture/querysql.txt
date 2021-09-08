@@ -50,5 +50,5 @@ create table `transactions`(
 	`transaction_date` datetime not null default current_timestamp,
 	primary key(`transactions_id`),
 	key `transaction_fk`(`account_id`),
-	constraint `transaction_fk` foreign key (`account_id`) references `accounts`(account_id`)
+	constraint `transaction_fk` foreign key (`account_id`) references `accounts`(`account_id`)
 )engine=innodb default charset=latin1
