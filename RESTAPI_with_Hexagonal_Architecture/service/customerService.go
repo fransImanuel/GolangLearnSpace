@@ -1,21 +1,24 @@
 package service
 
-import "github.com/fransimanuel/RestfulApiwithHexagonalArch/domain"
+import (
+	"github.com/fransimanuel/RestfulApiwithHexagonalArch/domain"
+	"github.com/fransimanuel/RestfulApiwithHexagonalArch/errs"
+)
 
 type CustomerService interface{
-	GetAllCustomer() ([]domain.Customer, error)
-	GetCustomer(string) (*domain.Customer, error)
+	GetAllCustomer() ([]domain.Customer, *errs.AppError)
+	GetCustomer(string) (*domain.Customer, *errs.AppError)
 }
 
 type DefaultCustomerService struct{
 	repo domain.CustomerRepository
 }
 
-func (s DefaultCustomerService) GetAllCustomer()([]domain.Customer, error){
+func (s DefaultCustomerService) GetAllCustomer()([]domain.Customer, *errs.AppError){
 	return s.repo.FindAll()
 }
 
-func (s DefaultCustomerService) GetCustomer(id string)(*domain.Customer, error){
+func (s DefaultCustomerService) GetCustomer(id string)(*domain.Customer, *errs.AppError){
 	return s.repo.ById(id)
 }
 

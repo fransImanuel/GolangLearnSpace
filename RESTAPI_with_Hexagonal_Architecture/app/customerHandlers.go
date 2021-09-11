@@ -3,19 +3,13 @@ package app
 import (
 	"encoding/json"
 	"encoding/xml"
-	"fmt"
 	"net/http"
+	"strconv"
 
+	"github.com/fransimanuel/RestfulApiwithHexagonalArch/logger"
 	"github.com/fransimanuel/RestfulApiwithHexagonalArch/service"
 	"github.com/gorilla/mux"
 )
-
-
-type Customer struct{
-	Name string `json:"full_name" xml:"name"`
-	City string `json:"city" xml:"city"`
-	Zipcode string `json:"zip_code" xml:"zipcode"`
-}
 
 // func greet(rw http.ResponseWriter, r *http.Request) {
 // 	fmt.Fprint(rw, "Hello Worlds")
@@ -31,13 +25,16 @@ func (ch *CustomerHandlers) getAllCustomers(rw http.ResponseWriter, r *http.Requ
 	// 	{"Robh", "New Delhi", "110076"},
 	// }
 
-	customers, _ := ch.service.GetAllCustomer()
+	customers,err := ch.service.GetAllCustomer()
+	if err!=nil {
+		logger.Debug(strconv.Itoa(err.Code))
+	}
 	if rw.Header().Get("Content-Type") == "application/xml" {
 		rw.Header().Add("Content-Type", "application/xml")
 		xml.NewEncoder(rw).Encode(customers)
+		writeResponse(rw, http.StatusOK, customers)
 	}else{
-		rw.Header().Add("Content-Type", "application/json")
-		json.NewEncoder(rw).Encode(customers)
+		writeResponse(rw, http.StatusOK, customers)
 	}
 }
 
@@ -47,10 +44,17 @@ func (ch *CustomerHandlers) getCustomers(rw http.ResponseWriter, r *http.Request
 
 	customer, err := ch.service.GetCustomer(id)
 	if err!=nil {
-		rw.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(rw, err.Error())
+		writeResponse(rw, err.Code, err.AsMessage())
 	}else{
-		rw.Header().Add("Content-Type", "application/json")
-		json.NewEncoder(rw).Encode(customer)
+		writeResponse(rw, http.StatusOK, customer)
+	}
+}
+
+func writeResponse(rw http.ResponseWriter, code int, data interface{}){
+	
+	rw.Header().Add("Content-Type", "application/json")
+	rw.WriteHeader(code)
+	if err := json.NewEncoder(rw).Encode(data); err != nil{
+		panic(err)
 	}
 }
