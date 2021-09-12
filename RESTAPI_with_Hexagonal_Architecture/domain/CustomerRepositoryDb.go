@@ -2,8 +2,6 @@ package domain
 
 import (
 	"database/sql"
-	"time"
-
 	"github.com/fransimanuel/RestfulApiwithHexagonalArch/errs"
 	"github.com/fransimanuel/RestfulApiwithHexagonalArch/logger"
 	_ "github.com/go-sql-driver/mysql"
@@ -11,33 +9,32 @@ import (
 )
 
 type CustomerRepositoryDb struct{
-	client *sql.DB
+	client *sqlx.DB
 }
 
 func (d CustomerRepositoryDb) FindAll()([]Customer, *errs.AppError){
 	findAllSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers"
+	customers := make([]Customer, 0)
+	err := d.client.Select(&customers, findAllSql)
 
-	rows, err := d.client.Query(findAllSql)
 	if err!=nil {
 		logger.Error("Error While Querying customer table "+ err.Error())
 		return nil, errs.NewUnexpectedError("Unexpected Database Error")
 	}
 
-	customers := make([]Customer, 0)
-	err = sqlx.StructScan(rows, &customers)
-	if err!=nil {
-		logger.Error("Error While Scanning customer table "+ err.Error())
-		return nil, errs.NewUnexpectedError("Unexpected Database Error")
-	}
+	// err = sqlx.StructScan(rows, &customers)
+	// if err!=nil {
+	// 	logger.Error("Error While Scanning customer table "+ err.Error())
+	// 	return nil, errs.NewUnexpectedError("Unexpected Database Error")
+	// }
 	return customers, nil
 }
 
 func(d CustomerRepositoryDb) ById(id string)(*Customer, *errs.AppError){
 	customerSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers where customer_id = ?"
 
-	row := d.client.QueryRow(customerSql, id)
 	var c Customer
-	err := row.Scan(&c.Id, &c.Name, &c.City, &c.Zipcode, &c.DateofBirth, &c.Status)
+	err := d.client.Get(&c, customerSql, id)
 	if err!=nil {
 		if err == sql.ErrNoRows {
 			logger.Error("Customer Not Found")
@@ -53,14 +50,6 @@ func(d CustomerRepositoryDb) ById(id string)(*Customer, *errs.AppError){
  
 }
 
-func NewCustomerRepositoryDb() CustomerRepositoryDb{
-	client, err := sql.Open("mysql", "root@/banking")
-	if err != nil {
-		panic(err)
-	}
-	// See "Important settings" section.
-	client.SetConnMaxLifetime(time.Minute * 3)
-	client.SetMaxOpenConns(10)
-	client.SetMaxIdleConns(10)
+func NewCustomerRepositoryDb(client *sqlx.DB) CustomerRepositoryDb{
 	return CustomerRepositoryDb{client}
 }

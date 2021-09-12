@@ -27,6 +27,7 @@ create table `accounts`(
 `opening_date` datetime not null default current_timestamp,
 `account_type` varchar(10) not null,
 `pin` varchar(10) not null,
+`amount` int(11) not null,
 `status` tinyint(4) not null default '1',
 primary key (`account_id`),
 KEY `accounts_FK` (`customer_id`),
@@ -34,12 +35,12 @@ constraint `accounts_FK` foreign key (`customer_id`) references `customers`(`cus
 )engine=innodb auto_increment=95476 default charset=latin1;
 
 insert into `accounts` values
-(95470,2000,'2020-08-22 10:20:06','Saving','1075',1),
-(95471,2001,'2020-06-15 10:27:22','Saving','1597',1),
-(95472,2002,'2020-08-09 10:27:22','Checking','1058',1),
-(95473,2003,'2020-06-23 10:27:20','Saving','0587',1),
-(95474,2004,'2020-02-20 10:27:21','Checking','2036',1),
-(95475,2005,'2020-03-01 10:27:19','Saving','1231',0);
+(95470,2000,'2020-08-22 10:20:06','Saving','1075',69,1),
+(95471,2001,'2020-06-15 10:27:22','Saving','1597',69,1),
+(95472,2002,'2020-08-09 10:27:22','Checking','1058',69,1),
+(95473,2003,'2020-06-23 10:27:20','Saving','0587',69,1),
+(95474,2004,'2020-02-20 10:27:21','Checking','2036',69,1),
+(95475,2005,'2020-03-01 10:27:19','Saving','1231',69,0);
 
 drop table if exists `transactions`;
 create table `transactions`(
