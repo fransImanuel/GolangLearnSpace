@@ -20,7 +20,7 @@ Insert into `customers` values
 (2004, 'Nina', '1978-12-19', 'Clarkston','112662',1),
 (2005, 'Osman', '1978-12-25', 'Syagile','110231',0);
 
-drop table if exist `accounts`;
+drop table if exist accounts;
 create table `accounts`(
 `account_id` int(11) not null auto_increment,
 `customer_id` int(11) not null,
